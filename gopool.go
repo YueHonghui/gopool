@@ -40,3 +40,11 @@ func (p *Pool) Put(value interface{}) {
 	p.idlelist.PushBack(value)
 	p.lock.Unlock()
 }
+
+func (p *Pool) Clear() {
+	p.lock.Lock()
+	defer p.lock.Unlock()
+	for p.idlelist.Len() > 0 {
+		p.idlelist.Remove(p.idlelist.Front())
+	}
+}
